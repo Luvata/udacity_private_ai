@@ -4,7 +4,7 @@ My write up for Facebook Secure and Private AI Udacity Scholarship (in Vietnames
 
 
 ## Roadmap
-- [ ] Lesson 2: Intro to Pytorch -> 30%
+- [ ] Lesson 2: Intro to Pytorch -> 40%
 - [ ] Lesson 3: Introducing Differential Privacy
 - [ ] Lesson 4: Evaluate the Privacy of a function
 - [ ] Lesson 5: Introducing Local and Global Differential Privacy
