@@ -6,7 +6,6 @@ privacy** (minimize amount of noise adding and maximize amount of privacy)
 ![relation1](relation1.png)
 ![relation2](relation2.png)
 
-![dp_formula](https://raw.githubusercontent.com/udacity/private-ai/master/dp_formula.png)
 
 ## Definitions
 ### 1. Local Differential Privacy
@@ -23,7 +22,14 @@ Add noise to function outputs (to the queries)
 ### 3. Trusted Curator
 An owner of a database upon which Global Differential privacy is applied. They are trusted to apply DP correctly
 
-### 4. Randomized Response
+### 4. Local DP vs Global DP
+|               | Local DP                                                              | Global DP                                                             |
+|---------------|-----------------------------------------------------------------------|-----------------------------------------------------------------------|
+| Query Example | ```def query(db): return torch.sum(db.float() + noise) ```            | ``` def query(db): return torch.sum(db.float()) + noise ```           |
+| Accuracy      |                                                                       | Often better than LDP since noise is added later                      |
+| Require       |                                                                       | Trusted curator                                                       |
+
+### 5. Randomized Response
 Technique that is used in social sciences when trying to learn about the **high level trends** for a **taboo** behavior
 (see examples)
 The results of a survey (e.g on jaywalking) can be skewed because some subset of population is going to 
@@ -34,8 +40,14 @@ answers:
     - If the first coin is tail -> Answer according to the **second coin flip** (head -> positive, tail -> negative)
 
 - The noisy survey result can be used to average the actual positive percent of the population.
-  
 
+### 6. Randomize mechanism
+A **function** with **random noised added** to its inputs / outputs /, and/or inner workings
+
+- Laplacian mechanism: A function being augmented with Laplacian noise
+
+### 7. Privacy budget:
+How much $\delta$, $\varepsilon$ leakage we allow to our analysis
 ## Examples
 Denote: 
 - P(head1): Probability that the first coin flip is head
@@ -81,6 +93,21 @@ this population:
                      = (        0.6        -    0.3   *    0.5  ) /   0.7
                      =   0.643
     ```
+    
+## DP Formal Definition
+Measure how much information being leaked from a differential privacy function 
+
+![dp_formula](https://raw.githubusercontent.com/udacity/private-ai/master/dp_formula.png)
+- M: A query function with randomize noise 
+- S: All potential output of M
+- x, y that ||x - y|| <=1 : Input of a query (y can be a parallel database of x)
+- $Pr[M(x)]$: Distribution of query over all db
+- $Pr[M(y)]$    : Distribution of query over all parallel db
+
+The maximum different of two distributions is measured by 2 parameters $\varepsilon$ and $\delta$ 
+- If $\varepsilon = 0$ $exp(\varepsilon) = 1$, which mean 2 distributions are identical -> No privacy leakage
+- $\delta$: usually a small number (0.00001), the probability that epsilon breaks
+that was not handled by $\varepsilon$
 ## Notes
 1. ```torch.rand``` return random numbers from a uniform distribution on the interval [0, 1)
 2. Differential Privacy always requires a form of randomness or noise added to the query to protect from things like 
